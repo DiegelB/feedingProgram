@@ -48,7 +48,7 @@ def loadArray(DF):
 		pickle.dump(DF, dogFile)
 
 # this asks the user for a new dog with its feedings then saves it to file
-def saveArray(DF):
+def addFeeding(DF):
 	with open("feeding.data", "rb") as dogFile:
 		DF = pickle.load(dogFile)
 		userInput = input("Please enter dog name:\n>>")
@@ -60,6 +60,32 @@ def saveArray(DF):
 	print()
 	menu()
 
+def removeDog(DF):
+	userInput = input("What dog would you like to remove?\n>>")
+	found = False
+	n = 0
+	f = 0
+	while found == False:
+		with open("feeding.data","rb") as dogFile:
+			DF = pickle.load(dogFile)
+			print(DF[n][f])
+			dog = DF[n][f]
+			if userInput == dog:
+				del DF[n][f]
+				del DF[n][f]
+				del DF[n]
+				print(DF)
+				with open("feeding.data","wb") as dogFile:
+					pickle.dump(DF, dogFile)
+			else:
+				print(DF[n])
+				n = n+1		
+
+		found = True
+		print(userInput, " removed.\n")
+		menu()
+		
+
 # creates a brand new feeding.data doc or resets the current one
 def newSave(DF):
 	with open("feeding.data","wb") as newDogFile:
@@ -69,10 +95,10 @@ def newSave(DF):
 # menu for navigation of programs features
 def menu():
 	userInput = input("1. Add new feeding info\n2. Get feeding info\n3. List feeding info\n"
-					  "4. Exit\n\n5. New save (WILL DELETE ALL DATA)\n>>")
+			  "4.Remove Dog\n5. Exit\n\n6. New save (WILL DELETE ALL DATA)\n>>")
 	if userInput == "1":
 		print()
-		saveArray(dogsFeeding)
+		addFeeding(dogsFeeding)
 	elif userInput == "2":
 		print()
 		getFeeding(dogsFeeding)
@@ -80,8 +106,10 @@ def menu():
 		print()
 		listFeeding()
 	elif userInput == "4":
-		exit()
+		removeDog(dogsFeeding)
 	elif userInput == "5":
+		exit()
+	elif userInput == "6":
 		userInput2 = input("To delete all data type 'delete'.\n>>")
 		if userInput2 == "delete":
 			newSave(dogsFeeding)
